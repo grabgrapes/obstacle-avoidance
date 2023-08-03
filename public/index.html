@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obstacle avoidance</title>
+</head>
+<body>
+    <h1>手机摄像头画面</h1>
+
+    <!-- 摄像头画面区域 -->
+    <div>
+        <video id="cameraView" width="640" height="480" autoplay></video>
+    </div>
+
+    <!-- 按钮区域 -->
+    <div>
+        <button id="connectBluetoothBtn">连接蓝牙</button>
+        <button id="startCameraBtn">启动摄像头</button>
+        <button id="stopCameraBtn">停止摄像头</button>
+        <button id="startCarBtn">启动小车</button>
+    </div>
+
+    <script>
+        // import {Curio} from "../src";
+        import { DeviceController } from "@espruino-tools/core";
+        export class MyNewDevice extends DeviceController {
+            constructor() {
+                super();
+            }
+        }
+
+        const curio = new MyNewDevice();
+
+        const cameraView = document.getElementById('cameraView');
+        const connectBluetoothBtn = document.getElementById('connectBluetoothBtn');
+        const startCameraBtn = document.getElementById('startCameraBtn');
+        const stopCameraBtn = document.getElementById('stopCameraBtn');
+        // const startCarBtn = document.getElementById('startCarBtn');
+        let stream = null;
+
+        // 检查设备是否支持摄像头
+        async function setupCamera() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                cameraView.srcObject = stream;
+            } catch (error) {
+                console.error('无法访问摄像头: ', error);
+            }
+        }
+
+        // 启动摄像头
+        function startCamera() {
+            if (stream) {
+                cameraView.srcObject = stream;
+            }
+        }
+
+        // 停止摄像头
+        function stopCamera() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
+        }
+
+        // 在此处添加连接蓝牙的逻辑
+        function connectBluetooth() {
+            curio.connect(function () {
+            console.log("connected");
+            });
+        }
+
+        // 绑定按钮点击事件
+        connectBluetoothBtn.addEventListener('click', connectBluetooth);
+        startCameraBtn.addEventListener('click', startCamera);
+        stopCameraBtn.addEventListener('click', stopCamera);
+        // startCarBtn.addEventListener('click', startCar);
+
+        // 初始化摄像头
+        setupCamera();
+    </script>
+
+    <script src="https://unpkg.com/@espruino-tools/core@latest/min/main.min.js"></script>
+<!--    <script src="src/webbluetooth.js"></script>-->
+
+</body>
+</html>
