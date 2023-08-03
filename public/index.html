@@ -20,18 +20,19 @@
         <button id="startCameraBtn">启动摄像头</button>
         <button id="stopCameraBtn">停止摄像头</button>
         <button id="startCarBtn">启动小车</button>
+        <button id="myButton">查看</button>
     </div>
 
     <script>
         // import {Curio} from "../src";
-        import { DeviceController } from "@espruino-tools/core";
-        export class MyNewDevice extends DeviceController {
-            constructor() {
-                super();
-            }
-        }
+        // import { DeviceController } from "@espruino-tools/core";
+        // export class MyNewDevice extends DeviceController {
+        //     constructor() {
+        //         super();
+        //     }
+        // }
 
-        const curio = new MyNewDevice();
+        // const curio = new MyNewDevice();
 
         const cameraView = document.getElementById('cameraView');
         const connectBluetoothBtn = document.getElementById('connectBluetoothBtn');
@@ -66,8 +67,9 @@
 
         // 在此处添加连接蓝牙的逻辑
         function connectBluetooth() {
+            let curio = new MyNewDevice();
             curio.connect(function () {
-            console.log("connected");
+                console.log("connected proudly");
             });
         }
 
@@ -81,8 +83,11 @@
         setupCamera();
     </script>
 
-    <script src="https://unpkg.com/@espruino-tools/core@latest/min/main.min.js"></script>
-<!--    <script src="src/webbluetooth.js"></script>-->
-
 </body>
+
+<script src="https://unpkg.com/@espruino-tools/core@latest/min/main.min.js"></script>
+<script src="../src/CurioClass.js"></script>
+<script src="../src/check.js"></script>
+
+
 </html>
